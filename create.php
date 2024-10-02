@@ -2,6 +2,10 @@
 <?php require "config.php"; ?>
 <?php 
 
+if(!isset($_SESSION['username'])){
+  header("location: index.php");
+}
+
 if(isset($_POST['submit'])) {
   if($_POST['title']=='' OR $_POST['body']==''){
     echo "ada input kosong";
@@ -11,7 +15,7 @@ if(isset($_POST['submit'])) {
     $username=$_SESSION['username'];
 
     $insert = $conn->prepare("INSERT INTO post(title, body, username)
-    VALUES(:title, :title, :username)");
+    VALUES(:title, :body, :username)");
 
     $insert->execute([
       ':title' => $title,
@@ -19,6 +23,7 @@ if(isset($_POST['submit'])) {
       ':username' => $username
     ]);
     
+    header("location: index.php");
   }
 }
 
